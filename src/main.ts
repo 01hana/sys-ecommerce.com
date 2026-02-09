@@ -8,6 +8,7 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
+      transform: true, // 自動根據 DTO 型別轉型
     }),
   );
   app.enableCors();
