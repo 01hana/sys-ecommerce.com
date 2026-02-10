@@ -1,17 +1,18 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { ProductDto, SearchProductDto } from './dto';
+import { ProductDto } from './dto';
+import { PaginationDto } from '../common/dto';
 import { Prisma } from '../generated/prisma/client';
 
 @Injectable()
 export class ProductsService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll(dto: SearchProductDto) {
+  async findAll(dto: PaginationDto) {
     const { page, sizePage, search, filters } = dto;
     const skip = (page - 1) * sizePage;
 
-    // 1. 組建動態 where 條件
+    // 1. 建立一個有型別保護的動態查詢容器
     const where: Prisma.ProductWhereInput = {};
 
     // 模糊搜尋：針對 name 或 description
@@ -24,8 +25,8 @@ export class ProductsService {
 
     // 處理 filters 陣列 (範例：將其轉換為 Prisma 的 AND 條件)
     if (filters && filters.length > 0) {
-      where.AND = filters.map(f => ({
-        [f.field]: f.value,
+      where.AND = filters.map(filter => ({
+        [filter.field]: filter.value,
       }));
     }
 
@@ -79,9 +80,7 @@ export class ProductsService {
         select: { id: true },
       });
 
-      // 如果找不到任何資料，或是數量不對
       if (existingProducts.length !== ids.length) {
-        // 找出哪些 ID 是不存在的（選用，增加錯誤訊息細節）
         const foundIds = existingProducts.map(p => p.id);
         const missingIds = ids.filter(id => !foundIds.includes(id));
 

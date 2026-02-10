@@ -1,4 +1,3 @@
-import { Type } from 'class-transformer';
 import {
   IsArray,
   IsBoolean,
@@ -20,11 +19,16 @@ export class ProductDto {
   description?: string;
 
   @IsNotEmpty()
-  category: number;
+  categoryId: number;
 
   @IsString()
+  @IsNotEmpty()
+  cover: string;
+
+  @IsArray()
+  @IsString({ each: true })
   @IsOptional()
-  image: string;
+  images: string[];
 
   @IsNumber()
   @Min(0)
@@ -37,11 +41,4 @@ export class ProductDto {
   @IsBoolean()
   @IsNotEmpty()
   status: boolean;
-}
-
-export class DeleteProductsDto {
-  @IsNotEmpty()
-  @IsArray()
-  @IsInt({ each: true })
-  ids: number[];
 }

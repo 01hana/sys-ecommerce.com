@@ -1,13 +1,13 @@
 import { IsOptional, IsInt, IsString, IsArray, Min } from 'class-validator';
 
-export class SearchProductDto {
+export class PaginationDto {
   @IsInt()
   @Min(1)
   page: number = 1;
 
   @IsInt()
   @Min(1)
-  sizePage: number = 10;
+  sizePage: number = 35;
 
   @IsOptional()
   @IsString()
