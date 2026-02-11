@@ -10,12 +10,15 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CategoryDto } from './dto';
 import { PaginationDto, DeleteIntDto } from '../common/dto';
 import { AuthGuard } from '@nestjs/passport';
+import { CountInterceptor } from '../common/interceptors/count.interceptor';
 
+@UseInterceptors(CountInterceptor)
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}

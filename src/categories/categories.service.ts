@@ -38,6 +38,11 @@ export class CategoriesService {
         skip,
         take: sizePage,
         orderBy: { updatedAt: 'desc' },
+        include: {
+          _count: {
+            select: { products: true }, // 計算產品數量
+          },
+        },
       }),
     ]);
 
@@ -53,7 +58,7 @@ export class CategoriesService {
     const category = await this.prisma.category.findUnique({
       where: { id },
       // 如果想在查分類時順便看到有哪些產品，可以取消下面註解
-      // include: { products: true }
+      include: { products: true },
     });
 
     if (!category) {
