@@ -59,7 +59,7 @@ export class AuthService {
     }
   }
 
-  async signToken(user: any): Promise<{ admin_access_token: string }> {
+  async signToken(user: any): Promise<{ access_token: string }> {
     const payload = {
       uuid: user.id,
       name: user.name,
@@ -73,7 +73,8 @@ export class AuthService {
     });
 
     return {
-      admin_access_token: token,
+      access_token: token,
+      ...payload,
     };
   }
 }
