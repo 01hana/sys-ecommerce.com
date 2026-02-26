@@ -8,6 +8,7 @@ import {
   IsString,
   Min,
 } from 'class-validator';
+import { Type, Transform } from 'class-transformer';
 
 export class ProductDto {
   @IsString()
@@ -15,29 +16,37 @@ export class ProductDto {
   name: string;
 
   @IsString()
+  @IsNotEmpty()
+  number: string;
+
+  @IsString()
   @IsOptional()
   description?: string;
 
   @IsNotEmpty()
+  @Type(() => Number)
   categoryId: number;
 
   @IsString()
-  @IsNotEmpty()
-  cover: string;
+  @IsOptional()
+  cover?: string;
 
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
-  images: string[];
+  images?: string[];
 
   @IsNumber()
   @Min(0)
+  @Type(() => Number)
   price: number;
 
   @IsNumber()
   @Min(0)
+  @Transform(({ value }) => Number(value))
   stock: number;
 
+  @Transform(({ value }) => value === 'true' || value === true)
   @IsBoolean()
   @IsNotEmpty()
   status: boolean;

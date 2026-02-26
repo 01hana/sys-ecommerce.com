@@ -37,7 +37,7 @@ export class CategoriesService {
         where,
         skip,
         take: sizePage,
-        orderBy: { updatedAt: 'desc' },
+        orderBy: { updated_at: 'desc' },
         include: {
           _count: {
             select: { products: true }, // 計算產品數量
@@ -50,7 +50,6 @@ export class CategoriesService {
       data: categories,
       total,
       page,
-      sizePage,
     };
   }
 

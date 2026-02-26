@@ -15,8 +15,10 @@ async function bootstrap() {
     }),
   );
 
-  // 開放 public 資料夾，讓 /public/uploads/... 可被讀取
-  app.useStaticAssets(join(__dirname, '..', 'public'));
+  // app.useStaticAssets(join(__dirname, '..', 'public')); // __dirname 指向 src or dist 目錄，會導致路徑錯誤
+  app.useStaticAssets(join(process.cwd(), 'public'), { // process.cwd() 永遠指向根目錄
+    prefix: '/',
+  });
   app.useGlobalInterceptors(new TransformInterceptor());
   app.enableCors();
 

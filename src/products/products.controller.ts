@@ -19,16 +19,22 @@ import { PaginationDto, DeleteIntDto } from '../common/dto';
 import { AuthGuard } from '@nestjs/passport';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import * as path from 'path';
+import { FileUrlInterceptor } from 'src/common/interceptors/file-url.interceptor';
 
+@UseInterceptors(FileUrlInterceptor)
 @Controller('products')
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
   @HttpCode(HttpStatus.OK)
-  @Post('getTable')
+  @Post(':categoryId/getTable')
   @UseGuards(AuthGuard('jwt'))
-  getTable(@Body() dto: PaginationDto) {
-    return this.productsService.findAll(dto);
+  getTable(
+    @Body() dto: PaginationDto,
+    @Param('categoryId', new ParseIntPipe({ optional: true })) categoryId?: number,
+  ) {
+    return this.productsService.findAll(dto, categoryId);
   }
 
   @Get(':id')
@@ -37,8 +43,8 @@ export class ProductsController {
     return this.productsService.findOne(id);
   }
 
-  @Post()
-  // 使用攔截器，定義欄位名稱與最大數量
+  @Post(':categoryId')
+  @UseGuards(AuthGuard('jwt'))
   @UseInterceptors(
     FileFieldsInterceptor(
       [
@@ -48,29 +54,21 @@ export class ProductsController {
       {
         // 設定儲存邏輯
         storage: diskStorage({
-          destination: './public/uploads/products', // 檔案儲存路徑
+          destination: './public/uploads/products',
           filename: (req, file, callback) => {
             // 重新命名，防止重複 (例如: 1712345678-hash.jpg)
-            // const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-            callback(null, file.filename + '-' + Date.now());
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+            callback(null, `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`);
           },
         }),
       },
     ),
   )
-  @UseGuards(AuthGuard('jwt'))
   async create(
-    @UploadedFiles() files: { cover?: Express.Multer.File[]; images?: Express.Multer.File[] },
+    @UploadedFiles() files: { cover?: Express.Multer.File; images?: Express.Multer.File[] },
     @Body() dto: ProductDto,
   ) {
-    const coverPath = files.cover?.[0]?.path || '';
-    const imagesPaths = files.images?.map(file => file.path) || [];
-
-    return this.productsService.create({
-      ...dto,
-      cover: coverPath,
-      images: imagesPaths,
-    });
+    return this.productsService.create(dto, files);
   }
 
   @Patch(':id')
@@ -79,7 +77,7 @@ export class ProductsController {
     return this.productsService.update(id, dto);
   }
 
-  @Delete()
+  @Delete(':categoryId')
   @UseGuards(AuthGuard('jwt'))
   remove(@Body() dto: DeleteIntDto) {
     return this.productsService.remove(dto.ids);

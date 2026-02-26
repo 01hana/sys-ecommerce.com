@@ -26,8 +26,8 @@ export type AggregateCustomer = {
 
 export type CustomerMinAggregateOutputType = {
   id: string | null
-  createdAt: Date | null
-  updatedAt: Date | null
+  created_at: Date | null
+  updated_at: Date | null
   email: string | null
   hash: string | null
   name: string | null
@@ -37,8 +37,8 @@ export type CustomerMinAggregateOutputType = {
 
 export type CustomerMaxAggregateOutputType = {
   id: string | null
-  createdAt: Date | null
-  updatedAt: Date | null
+  created_at: Date | null
+  updated_at: Date | null
   email: string | null
   hash: string | null
   name: string | null
@@ -48,8 +48,8 @@ export type CustomerMaxAggregateOutputType = {
 
 export type CustomerCountAggregateOutputType = {
   id: number
-  createdAt: number
-  updatedAt: number
+  created_at: number
+  updated_at: number
   email: number
   hash: number
   name: number
@@ -61,8 +61,8 @@ export type CustomerCountAggregateOutputType = {
 
 export type CustomerMinAggregateInputType = {
   id?: true
-  createdAt?: true
-  updatedAt?: true
+  created_at?: true
+  updated_at?: true
   email?: true
   hash?: true
   name?: true
@@ -72,8 +72,8 @@ export type CustomerMinAggregateInputType = {
 
 export type CustomerMaxAggregateInputType = {
   id?: true
-  createdAt?: true
-  updatedAt?: true
+  created_at?: true
+  updated_at?: true
   email?: true
   hash?: true
   name?: true
@@ -83,8 +83,8 @@ export type CustomerMaxAggregateInputType = {
 
 export type CustomerCountAggregateInputType = {
   id?: true
-  createdAt?: true
-  updatedAt?: true
+  created_at?: true
+  updated_at?: true
   email?: true
   hash?: true
   name?: true
@@ -167,8 +167,8 @@ export type CustomerGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 
 export type CustomerGroupByOutputType = {
   id: string
-  createdAt: Date
-  updatedAt: Date
+  created_at: Date
+  updated_at: Date
   email: string
   hash: string
   name: string
@@ -199,8 +199,8 @@ export type CustomerWhereInput = {
   OR?: Prisma.CustomerWhereInput[]
   NOT?: Prisma.CustomerWhereInput | Prisma.CustomerWhereInput[]
   id?: Prisma.StringFilter<"Customer"> | string
-  createdAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
+  created_at?: Prisma.DateTimeFilter<"Customer"> | Date | string
+  updated_at?: Prisma.DateTimeFilter<"Customer"> | Date | string
   email?: Prisma.StringFilter<"Customer"> | string
   hash?: Prisma.StringFilter<"Customer"> | string
   name?: Prisma.StringFilter<"Customer"> | string
@@ -210,8 +210,8 @@ export type CustomerWhereInput = {
 
 export type CustomerOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
+  updated_at?: Prisma.SortOrder
   email?: Prisma.SortOrder
   hash?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -225,8 +225,8 @@ export type CustomerWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.CustomerWhereInput | Prisma.CustomerWhereInput[]
   OR?: Prisma.CustomerWhereInput[]
   NOT?: Prisma.CustomerWhereInput | Prisma.CustomerWhereInput[]
-  createdAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
+  created_at?: Prisma.DateTimeFilter<"Customer"> | Date | string
+  updated_at?: Prisma.DateTimeFilter<"Customer"> | Date | string
   hash?: Prisma.StringFilter<"Customer"> | string
   name?: Prisma.StringFilter<"Customer"> | string
   mobile?: Prisma.StringFilter<"Customer"> | string
@@ -235,8 +235,8 @@ export type CustomerWhereUniqueInput = Prisma.AtLeast<{
 
 export type CustomerOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
+  updated_at?: Prisma.SortOrder
   email?: Prisma.SortOrder
   hash?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -252,8 +252,8 @@ export type CustomerScalarWhereWithAggregatesInput = {
   OR?: Prisma.CustomerScalarWhereWithAggregatesInput[]
   NOT?: Prisma.CustomerScalarWhereWithAggregatesInput | Prisma.CustomerScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Customer"> | string
-  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Customer"> | Date | string
-  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Customer"> | Date | string
+  created_at?: Prisma.DateTimeWithAggregatesFilter<"Customer"> | Date | string
+  updated_at?: Prisma.DateTimeWithAggregatesFilter<"Customer"> | Date | string
   email?: Prisma.StringWithAggregatesFilter<"Customer"> | string
   hash?: Prisma.StringWithAggregatesFilter<"Customer"> | string
   name?: Prisma.StringWithAggregatesFilter<"Customer"> | string
@@ -263,8 +263,8 @@ export type CustomerScalarWhereWithAggregatesInput = {
 
 export type CustomerCreateInput = {
   id?: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  created_at?: Date | string
+  updated_at?: Date | string
   email: string
   hash: string
   name: string
@@ -274,8 +274,8 @@ export type CustomerCreateInput = {
 
 export type CustomerUncheckedCreateInput = {
   id?: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  created_at?: Date | string
+  updated_at?: Date | string
   email: string
   hash: string
   name: string
@@ -285,8 +285,8 @@ export type CustomerUncheckedCreateInput = {
 
 export type CustomerUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   hash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -296,8 +296,8 @@ export type CustomerUpdateInput = {
 
 export type CustomerUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   hash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -307,8 +307,8 @@ export type CustomerUncheckedUpdateInput = {
 
 export type CustomerCreateManyInput = {
   id?: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  created_at?: Date | string
+  updated_at?: Date | string
   email: string
   hash: string
   name: string
@@ -318,8 +318,8 @@ export type CustomerCreateManyInput = {
 
 export type CustomerUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   hash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -329,8 +329,8 @@ export type CustomerUpdateManyMutationInput = {
 
 export type CustomerUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   hash?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -340,8 +340,8 @@ export type CustomerUncheckedUpdateManyInput = {
 
 export type CustomerCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
+  updated_at?: Prisma.SortOrder
   email?: Prisma.SortOrder
   hash?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -351,8 +351,8 @@ export type CustomerCountOrderByAggregateInput = {
 
 export type CustomerMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
+  updated_at?: Prisma.SortOrder
   email?: Prisma.SortOrder
   hash?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -362,8 +362,8 @@ export type CustomerMaxOrderByAggregateInput = {
 
 export type CustomerMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
+  updated_at?: Prisma.SortOrder
   email?: Prisma.SortOrder
   hash?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -375,8 +375,8 @@ export type CustomerMinOrderByAggregateInput = {
 
 export type CustomerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  created_at?: boolean
+  updated_at?: boolean
   email?: boolean
   hash?: boolean
   name?: boolean
@@ -386,8 +386,8 @@ export type CustomerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
 
 export type CustomerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  created_at?: boolean
+  updated_at?: boolean
   email?: boolean
   hash?: boolean
   name?: boolean
@@ -397,8 +397,8 @@ export type CustomerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
 
 export type CustomerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  created_at?: boolean
+  updated_at?: boolean
   email?: boolean
   hash?: boolean
   name?: boolean
@@ -408,8 +408,8 @@ export type CustomerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
 
 export type CustomerSelectScalar = {
   id?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  created_at?: boolean
+  updated_at?: boolean
   email?: boolean
   hash?: boolean
   name?: boolean
@@ -417,15 +417,15 @@ export type CustomerSelectScalar = {
   address?: boolean
 }
 
-export type CustomerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "email" | "hash" | "name" | "mobile" | "address", ExtArgs["result"]["customer"]>
+export type CustomerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "created_at" | "updated_at" | "email" | "hash" | "name" | "mobile" | "address", ExtArgs["result"]["customer"]>
 
 export type $CustomerPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Customer"
   objects: {}
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    createdAt: Date
-    updatedAt: Date
+    created_at: Date
+    updated_at: Date
     email: string
     hash: string
     name: string
@@ -855,8 +855,8 @@ export interface Prisma__CustomerClient<T, Null = never, ExtArgs extends runtime
  */
 export interface CustomerFieldRefs {
   readonly id: Prisma.FieldRef<"Customer", 'String'>
-  readonly createdAt: Prisma.FieldRef<"Customer", 'DateTime'>
-  readonly updatedAt: Prisma.FieldRef<"Customer", 'DateTime'>
+  readonly created_at: Prisma.FieldRef<"Customer", 'DateTime'>
+  readonly updated_at: Prisma.FieldRef<"Customer", 'DateTime'>
   readonly email: Prisma.FieldRef<"Customer", 'String'>
   readonly hash: Prisma.FieldRef<"Customer", 'String'>
   readonly name: Prisma.FieldRef<"Customer", 'String'>

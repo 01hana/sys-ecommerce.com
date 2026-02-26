@@ -54,7 +54,8 @@ export const ModelName = {
   User: 'User',
   Customer: 'Customer',
   Category: 'Category',
-  Product: 'Product'
+  Product: 'Product',
+  File: 'File'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -75,8 +76,8 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const UserScalarFieldEnum = {
   id: 'id',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
   name: 'name',
   account: 'account',
   email: 'email',
@@ -90,8 +91,8 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 
 export const CustomerScalarFieldEnum = {
   id: 'id',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
   email: 'email',
   hash: 'hash',
   name: 'name',
@@ -104,8 +105,8 @@ export type CustomerScalarFieldEnum = (typeof CustomerScalarFieldEnum)[keyof typ
 
 export const CategoryScalarFieldEnum = {
   id: 'id',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
   name: 'name',
   status: 'status'
 } as const
@@ -115,9 +116,10 @@ export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typ
 
 export const ProductScalarFieldEnum = {
   id: 'id',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
   name: 'name',
+  number: 'number',
   description: 'description',
   price: 'price',
   cover: 'cover',
@@ -128,6 +130,18 @@ export const ProductScalarFieldEnum = {
 } as const
 
 export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
+
+
+export const FileScalarFieldEnum = {
+  id: 'id',
+  filename: 'filename',
+  path: 'path',
+  mimetype: 'mimetype',
+  description: 'description',
+  created_at: 'created_at'
+} as const
+
+export type FileScalarFieldEnum = (typeof FileScalarFieldEnum)[keyof typeof FileScalarFieldEnum]
 
 
 export const SortOrder = {

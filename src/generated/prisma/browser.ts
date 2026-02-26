@@ -37,3 +37,8 @@ export type Category = Prisma.CategoryModel
  * 
  */
 export type Product = Prisma.ProductModel
+/**
+ * Model File
+ * 
+ */
+export type File = Prisma.FileModel

@@ -42,9 +42,10 @@ export type ProductSumAggregateOutputType = {
 
 export type ProductMinAggregateOutputType = {
   id: number | null
-  createdAt: Date | null
-  updatedAt: Date | null
+  created_at: Date | null
+  updated_at: Date | null
   name: string | null
+  number: string | null
   description: string | null
   price: number | null
   cover: string | null
@@ -55,9 +56,10 @@ export type ProductMinAggregateOutputType = {
 
 export type ProductMaxAggregateOutputType = {
   id: number | null
-  createdAt: Date | null
-  updatedAt: Date | null
+  created_at: Date | null
+  updated_at: Date | null
   name: string | null
+  number: string | null
   description: string | null
   price: number | null
   cover: string | null
@@ -68,9 +70,10 @@ export type ProductMaxAggregateOutputType = {
 
 export type ProductCountAggregateOutputType = {
   id: number
-  createdAt: number
-  updatedAt: number
+  created_at: number
+  updated_at: number
   name: number
+  number: number
   description: number
   price: number
   cover: number
@@ -98,9 +101,10 @@ export type ProductSumAggregateInputType = {
 
 export type ProductMinAggregateInputType = {
   id?: true
-  createdAt?: true
-  updatedAt?: true
+  created_at?: true
+  updated_at?: true
   name?: true
+  number?: true
   description?: true
   price?: true
   cover?: true
@@ -111,9 +115,10 @@ export type ProductMinAggregateInputType = {
 
 export type ProductMaxAggregateInputType = {
   id?: true
-  createdAt?: true
-  updatedAt?: true
+  created_at?: true
+  updated_at?: true
   name?: true
+  number?: true
   description?: true
   price?: true
   cover?: true
@@ -124,9 +129,10 @@ export type ProductMaxAggregateInputType = {
 
 export type ProductCountAggregateInputType = {
   id?: true
-  createdAt?: true
-  updatedAt?: true
+  created_at?: true
+  updated_at?: true
   name?: true
+  number?: true
   description?: true
   price?: true
   cover?: true
@@ -225,9 +231,10 @@ export type ProductGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 
 export type ProductGroupByOutputType = {
   id: number
-  createdAt: Date
-  updatedAt: Date
+  created_at: Date
+  updated_at: Date
   name: string
+  number: string | null
   description: string | null
   price: number
   cover: string
@@ -262,9 +269,10 @@ export type ProductWhereInput = {
   OR?: Prisma.ProductWhereInput[]
   NOT?: Prisma.ProductWhereInput | Prisma.ProductWhereInput[]
   id?: Prisma.IntFilter<"Product"> | number
-  createdAt?: Prisma.DateTimeFilter<"Product"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Product"> | Date | string
+  created_at?: Prisma.DateTimeFilter<"Product"> | Date | string
+  updated_at?: Prisma.DateTimeFilter<"Product"> | Date | string
   name?: Prisma.StringFilter<"Product"> | string
+  number?: Prisma.StringNullableFilter<"Product"> | string | null
   description?: Prisma.StringNullableFilter<"Product"> | string | null
   price?: Prisma.FloatFilter<"Product"> | number
   cover?: Prisma.StringFilter<"Product"> | string
@@ -277,9 +285,10 @@ export type ProductWhereInput = {
 
 export type ProductOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
+  updated_at?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  number?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   price?: Prisma.SortOrder
   cover?: Prisma.SortOrder
@@ -293,11 +302,12 @@ export type ProductOrderByWithRelationInput = {
 export type ProductWhereUniqueInput = Prisma.AtLeast<{
   id?: number
   name?: string
+  number?: string
   AND?: Prisma.ProductWhereInput | Prisma.ProductWhereInput[]
   OR?: Prisma.ProductWhereInput[]
   NOT?: Prisma.ProductWhereInput | Prisma.ProductWhereInput[]
-  createdAt?: Prisma.DateTimeFilter<"Product"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Product"> | Date | string
+  created_at?: Prisma.DateTimeFilter<"Product"> | Date | string
+  updated_at?: Prisma.DateTimeFilter<"Product"> | Date | string
   description?: Prisma.StringNullableFilter<"Product"> | string | null
   price?: Prisma.FloatFilter<"Product"> | number
   cover?: Prisma.StringFilter<"Product"> | string
@@ -306,13 +316,14 @@ export type ProductWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.BoolFilter<"Product"> | boolean
   stock?: Prisma.IntFilter<"Product"> | number
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
-}, "id" | "name">
+}, "id" | "name" | "number">
 
 export type ProductOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
+  updated_at?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  number?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   price?: Prisma.SortOrder
   cover?: Prisma.SortOrder
@@ -332,9 +343,10 @@ export type ProductScalarWhereWithAggregatesInput = {
   OR?: Prisma.ProductScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ProductScalarWhereWithAggregatesInput | Prisma.ProductScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Product"> | number
-  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Product"> | Date | string
-  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Product"> | Date | string
+  created_at?: Prisma.DateTimeWithAggregatesFilter<"Product"> | Date | string
+  updated_at?: Prisma.DateTimeWithAggregatesFilter<"Product"> | Date | string
   name?: Prisma.StringWithAggregatesFilter<"Product"> | string
+  number?: Prisma.StringNullableWithAggregatesFilter<"Product"> | string | null
   description?: Prisma.StringNullableWithAggregatesFilter<"Product"> | string | null
   price?: Prisma.FloatWithAggregatesFilter<"Product"> | number
   cover?: Prisma.StringWithAggregatesFilter<"Product"> | string
@@ -345,9 +357,10 @@ export type ProductScalarWhereWithAggregatesInput = {
 }
 
 export type ProductCreateInput = {
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  created_at?: Date | string
+  updated_at?: Date | string
   name: string
+  number?: string | null
   description?: string | null
   price: number
   cover: string
@@ -359,9 +372,10 @@ export type ProductCreateInput = {
 
 export type ProductUncheckedCreateInput = {
   id?: number
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  created_at?: Date | string
+  updated_at?: Date | string
   name: string
+  number?: string | null
   description?: string | null
   price: number
   cover: string
@@ -372,9 +386,10 @@ export type ProductUncheckedCreateInput = {
 }
 
 export type ProductUpdateInput = {
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   cover?: Prisma.StringFieldUpdateOperationsInput | string
@@ -386,9 +401,10 @@ export type ProductUpdateInput = {
 
 export type ProductUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   cover?: Prisma.StringFieldUpdateOperationsInput | string
@@ -400,9 +416,10 @@ export type ProductUncheckedUpdateInput = {
 
 export type ProductCreateManyInput = {
   id?: number
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  created_at?: Date | string
+  updated_at?: Date | string
   name: string
+  number?: string | null
   description?: string | null
   price: number
   cover: string
@@ -413,9 +430,10 @@ export type ProductCreateManyInput = {
 }
 
 export type ProductUpdateManyMutationInput = {
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   cover?: Prisma.StringFieldUpdateOperationsInput | string
@@ -426,9 +444,10 @@ export type ProductUpdateManyMutationInput = {
 
 export type ProductUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   cover?: Prisma.StringFieldUpdateOperationsInput | string
@@ -450,9 +469,10 @@ export type ProductOrderByRelationAggregateInput = {
 
 export type ProductCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
+  updated_at?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  number?: Prisma.SortOrder
   description?: Prisma.SortOrder
   price?: Prisma.SortOrder
   cover?: Prisma.SortOrder
@@ -471,9 +491,10 @@ export type ProductAvgOrderByAggregateInput = {
 
 export type ProductMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
+  updated_at?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  number?: Prisma.SortOrder
   description?: Prisma.SortOrder
   price?: Prisma.SortOrder
   cover?: Prisma.SortOrder
@@ -484,9 +505,10 @@ export type ProductMaxOrderByAggregateInput = {
 
 export type ProductMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
+  updated_at?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  number?: Prisma.SortOrder
   description?: Prisma.SortOrder
   price?: Prisma.SortOrder
   cover?: Prisma.SortOrder
@@ -566,9 +588,10 @@ export type ProductUpdateimagesInput = {
 }
 
 export type ProductCreateWithoutCategoryInput = {
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  created_at?: Date | string
+  updated_at?: Date | string
   name: string
+  number?: string | null
   description?: string | null
   price: number
   cover: string
@@ -579,9 +602,10 @@ export type ProductCreateWithoutCategoryInput = {
 
 export type ProductUncheckedCreateWithoutCategoryInput = {
   id?: number
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  created_at?: Date | string
+  updated_at?: Date | string
   name: string
+  number?: string | null
   description?: string | null
   price: number
   cover: string
@@ -621,9 +645,10 @@ export type ProductScalarWhereInput = {
   OR?: Prisma.ProductScalarWhereInput[]
   NOT?: Prisma.ProductScalarWhereInput | Prisma.ProductScalarWhereInput[]
   id?: Prisma.IntFilter<"Product"> | number
-  createdAt?: Prisma.DateTimeFilter<"Product"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Product"> | Date | string
+  created_at?: Prisma.DateTimeFilter<"Product"> | Date | string
+  updated_at?: Prisma.DateTimeFilter<"Product"> | Date | string
   name?: Prisma.StringFilter<"Product"> | string
+  number?: Prisma.StringNullableFilter<"Product"> | string | null
   description?: Prisma.StringNullableFilter<"Product"> | string | null
   price?: Prisma.FloatFilter<"Product"> | number
   cover?: Prisma.StringFilter<"Product"> | string
@@ -635,9 +660,10 @@ export type ProductScalarWhereInput = {
 
 export type ProductCreateManyCategoryInput = {
   id?: number
-  createdAt?: Date | string
-  updatedAt?: Date | string
+  created_at?: Date | string
+  updated_at?: Date | string
   name: string
+  number?: string | null
   description?: string | null
   price: number
   cover: string
@@ -647,9 +673,10 @@ export type ProductCreateManyCategoryInput = {
 }
 
 export type ProductUpdateWithoutCategoryInput = {
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   cover?: Prisma.StringFieldUpdateOperationsInput | string
@@ -660,9 +687,10 @@ export type ProductUpdateWithoutCategoryInput = {
 
 export type ProductUncheckedUpdateWithoutCategoryInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   cover?: Prisma.StringFieldUpdateOperationsInput | string
@@ -673,9 +701,10 @@ export type ProductUncheckedUpdateWithoutCategoryInput = {
 
 export type ProductUncheckedUpdateManyWithoutCategoryInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  number?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   cover?: Prisma.StringFieldUpdateOperationsInput | string
@@ -688,9 +717,10 @@ export type ProductUncheckedUpdateManyWithoutCategoryInput = {
 
 export type ProductSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  created_at?: boolean
+  updated_at?: boolean
   name?: boolean
+  number?: boolean
   description?: boolean
   price?: boolean
   cover?: boolean
@@ -703,9 +733,10 @@ export type ProductSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 
 export type ProductSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  created_at?: boolean
+  updated_at?: boolean
   name?: boolean
+  number?: boolean
   description?: boolean
   price?: boolean
   cover?: boolean
@@ -718,9 +749,10 @@ export type ProductSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
 
 export type ProductSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  created_at?: boolean
+  updated_at?: boolean
   name?: boolean
+  number?: boolean
   description?: boolean
   price?: boolean
   cover?: boolean
@@ -733,9 +765,10 @@ export type ProductSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 
 export type ProductSelectScalar = {
   id?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
+  created_at?: boolean
+  updated_at?: boolean
   name?: boolean
+  number?: boolean
   description?: boolean
   price?: boolean
   cover?: boolean
@@ -745,7 +778,7 @@ export type ProductSelectScalar = {
   stock?: boolean
 }
 
-export type ProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "name" | "description" | "price" | "cover" | "images" | "categoryId" | "status" | "stock", ExtArgs["result"]["product"]>
+export type ProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "created_at" | "updated_at" | "name" | "number" | "description" | "price" | "cover" | "images" | "categoryId" | "status" | "stock", ExtArgs["result"]["product"]>
 export type ProductInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
 }
@@ -763,9 +796,10 @@ export type $ProductPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
-    createdAt: Date
-    updatedAt: Date
+    created_at: Date
+    updated_at: Date
     name: string
+    number: string | null
     description: string | null
     price: number
     cover: string
@@ -1198,9 +1232,10 @@ export interface Prisma__ProductClient<T, Null = never, ExtArgs extends runtime.
  */
 export interface ProductFieldRefs {
   readonly id: Prisma.FieldRef<"Product", 'Int'>
-  readonly createdAt: Prisma.FieldRef<"Product", 'DateTime'>
-  readonly updatedAt: Prisma.FieldRef<"Product", 'DateTime'>
+  readonly created_at: Prisma.FieldRef<"Product", 'DateTime'>
+  readonly updated_at: Prisma.FieldRef<"Product", 'DateTime'>
   readonly name: Prisma.FieldRef<"Product", 'String'>
+  readonly number: Prisma.FieldRef<"Product", 'String'>
   readonly description: Prisma.FieldRef<"Product", 'String'>
   readonly price: Prisma.FieldRef<"Product", 'Float'>
   readonly cover: Prisma.FieldRef<"Product", 'String'>
