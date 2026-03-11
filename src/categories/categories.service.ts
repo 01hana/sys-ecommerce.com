@@ -98,14 +98,14 @@ export class CategoriesService {
       });
 
       if (existingCategories.length !== ids.length) {
-        const foundIds = existingCategories.map(c => c.id);
+        const foundIds = existingCategories.map(category => category.id);
         const missingIds = ids.filter(id => !foundIds.includes(id));
 
         throw new NotFoundException(`找不到以下分類 ID：${missingIds.join(', ')}`);
       }
 
       // 2. 執行批量刪除
-      // 注意：如果 Prisma Schema 沒有設定 onDelete: Cascade，
+      // 注意：如果 Prisma Schema 沒有設定 @relation onDelete: Cascade，
       // 且分類下仍有產品，這裡會拋出 P2003 錯誤
       try {
         await tx.category.deleteMany({

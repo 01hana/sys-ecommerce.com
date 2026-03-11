@@ -43,6 +43,11 @@ export { Prisma }
  */
 export type User = Prisma.UserModel
 /**
+ * Model Group
+ * 
+ */
+export type Group = Prisma.GroupModel
+/**
  * Model Customer
  * 
  */

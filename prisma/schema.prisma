@@ -23,10 +23,24 @@ model User {
   account   String    @unique
   email     String    @unique
   hash      String
-  groups    String[]
+  groups    Group[]   
   status    Boolean   @default(true)
 
   @@map("users")
+}
+
+model Group {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  name        String  @unique
+  description String?
+  sort        Int     @default(0)
+  status      Boolean @default(true)
+  users       User[]
+
+  @@map("groups")
 }
 
 model Customer {
