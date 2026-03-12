@@ -39,6 +39,7 @@ model Group {
   sort        Int     @default(0)
   status      Boolean @default(true)
   users       User[]
+  permissions Permission[]
 
   @@map("groups")
 }
@@ -99,4 +100,17 @@ model File {
   created_at   DateTime @default(now())
 
   @@map("files")
+}
+
+model Permission {
+  id          Int      @id @default(autoincrement())
+  subject     String
+  action      String
+  groups      Group[]
+
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  @@unique([subject, action])
+  @@map("permissions")
 }

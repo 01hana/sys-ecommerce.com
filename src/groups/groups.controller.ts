@@ -10,16 +10,19 @@ import {
   UseGuards,
   HttpStatus,
   HttpCode,
+  UseInterceptors,
 } from '@nestjs/common';
 import { GroupsService } from './groups.service';
 import { CreateGroupDto } from './dto';
 import { AuthGuard } from '@nestjs/passport';
 import { DeleteIntDto, PaginationDto } from 'src/common/dto';
+import { CountInterceptor } from 'src/common/interceptors/count.interceptor';
 
 @Controller('groups')
 export class GroupsController {
   constructor(private groupsService: GroupsService) {}
 
+  @UseInterceptors(CountInterceptor)
   @HttpCode(HttpStatus.OK)
   @Post('getTable')
   @UseGuards(AuthGuard('jwt'))

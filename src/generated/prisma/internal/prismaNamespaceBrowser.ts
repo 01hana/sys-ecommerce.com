@@ -56,7 +56,8 @@ export const ModelName = {
   Customer: 'Customer',
   Category: 'Category',
   Product: 'Product',
-  File: 'File'
+  File: 'File',
+  Permission: 'Permission'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -155,6 +156,17 @@ export const FileScalarFieldEnum = {
 } as const
 
 export type FileScalarFieldEnum = (typeof FileScalarFieldEnum)[keyof typeof FileScalarFieldEnum]
+
+
+export const PermissionScalarFieldEnum = {
+  id: 'id',
+  subject: 'subject',
+  action: 'action',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type PermissionScalarFieldEnum = (typeof PermissionScalarFieldEnum)[keyof typeof PermissionScalarFieldEnum]
 
 
 export const SortOrder = {

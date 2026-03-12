@@ -237,6 +237,7 @@ export type GroupWhereInput = {
   sort?: Prisma.IntFilter<"Group"> | number
   status?: Prisma.BoolFilter<"Group"> | boolean
   users?: Prisma.UserListRelationFilter
+  permissions?: Prisma.PermissionListRelationFilter
 }
 
 export type GroupOrderByWithRelationInput = {
@@ -248,6 +249,7 @@ export type GroupOrderByWithRelationInput = {
   sort?: Prisma.SortOrder
   status?: Prisma.SortOrder
   users?: Prisma.UserOrderByRelationAggregateInput
+  permissions?: Prisma.PermissionOrderByRelationAggregateInput
 }
 
 export type GroupWhereUniqueInput = Prisma.AtLeast<{
@@ -262,6 +264,7 @@ export type GroupWhereUniqueInput = Prisma.AtLeast<{
   sort?: Prisma.IntFilter<"Group"> | number
   status?: Prisma.BoolFilter<"Group"> | boolean
   users?: Prisma.UserListRelationFilter
+  permissions?: Prisma.PermissionListRelationFilter
 }, "id" | "name">
 
 export type GroupOrderByWithAggregationInput = {
@@ -300,6 +303,7 @@ export type GroupCreateInput = {
   sort?: number
   status?: boolean
   users?: Prisma.UserCreateNestedManyWithoutGroupsInput
+  permissions?: Prisma.PermissionCreateNestedManyWithoutGroupsInput
 }
 
 export type GroupUncheckedCreateInput = {
@@ -311,6 +315,7 @@ export type GroupUncheckedCreateInput = {
   sort?: number
   status?: boolean
   users?: Prisma.UserUncheckedCreateNestedManyWithoutGroupsInput
+  permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutGroupsInput
 }
 
 export type GroupUpdateInput = {
@@ -321,6 +326,7 @@ export type GroupUpdateInput = {
   sort?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   users?: Prisma.UserUpdateManyWithoutGroupsNestedInput
+  permissions?: Prisma.PermissionUpdateManyWithoutGroupsNestedInput
 }
 
 export type GroupUncheckedUpdateInput = {
@@ -332,6 +338,7 @@ export type GroupUncheckedUpdateInput = {
   sort?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
   users?: Prisma.UserUncheckedUpdateManyWithoutGroupsNestedInput
+  permissions?: Prisma.PermissionUncheckedUpdateManyWithoutGroupsNestedInput
 }
 
 export type GroupCreateManyInput = {
@@ -463,6 +470,44 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type GroupCreateNestedManyWithoutPermissionsInput = {
+  create?: Prisma.XOR<Prisma.GroupCreateWithoutPermissionsInput, Prisma.GroupUncheckedCreateWithoutPermissionsInput> | Prisma.GroupCreateWithoutPermissionsInput[] | Prisma.GroupUncheckedCreateWithoutPermissionsInput[]
+  connectOrCreate?: Prisma.GroupCreateOrConnectWithoutPermissionsInput | Prisma.GroupCreateOrConnectWithoutPermissionsInput[]
+  connect?: Prisma.GroupWhereUniqueInput | Prisma.GroupWhereUniqueInput[]
+}
+
+export type GroupUncheckedCreateNestedManyWithoutPermissionsInput = {
+  create?: Prisma.XOR<Prisma.GroupCreateWithoutPermissionsInput, Prisma.GroupUncheckedCreateWithoutPermissionsInput> | Prisma.GroupCreateWithoutPermissionsInput[] | Prisma.GroupUncheckedCreateWithoutPermissionsInput[]
+  connectOrCreate?: Prisma.GroupCreateOrConnectWithoutPermissionsInput | Prisma.GroupCreateOrConnectWithoutPermissionsInput[]
+  connect?: Prisma.GroupWhereUniqueInput | Prisma.GroupWhereUniqueInput[]
+}
+
+export type GroupUpdateManyWithoutPermissionsNestedInput = {
+  create?: Prisma.XOR<Prisma.GroupCreateWithoutPermissionsInput, Prisma.GroupUncheckedCreateWithoutPermissionsInput> | Prisma.GroupCreateWithoutPermissionsInput[] | Prisma.GroupUncheckedCreateWithoutPermissionsInput[]
+  connectOrCreate?: Prisma.GroupCreateOrConnectWithoutPermissionsInput | Prisma.GroupCreateOrConnectWithoutPermissionsInput[]
+  upsert?: Prisma.GroupUpsertWithWhereUniqueWithoutPermissionsInput | Prisma.GroupUpsertWithWhereUniqueWithoutPermissionsInput[]
+  set?: Prisma.GroupWhereUniqueInput | Prisma.GroupWhereUniqueInput[]
+  disconnect?: Prisma.GroupWhereUniqueInput | Prisma.GroupWhereUniqueInput[]
+  delete?: Prisma.GroupWhereUniqueInput | Prisma.GroupWhereUniqueInput[]
+  connect?: Prisma.GroupWhereUniqueInput | Prisma.GroupWhereUniqueInput[]
+  update?: Prisma.GroupUpdateWithWhereUniqueWithoutPermissionsInput | Prisma.GroupUpdateWithWhereUniqueWithoutPermissionsInput[]
+  updateMany?: Prisma.GroupUpdateManyWithWhereWithoutPermissionsInput | Prisma.GroupUpdateManyWithWhereWithoutPermissionsInput[]
+  deleteMany?: Prisma.GroupScalarWhereInput | Prisma.GroupScalarWhereInput[]
+}
+
+export type GroupUncheckedUpdateManyWithoutPermissionsNestedInput = {
+  create?: Prisma.XOR<Prisma.GroupCreateWithoutPermissionsInput, Prisma.GroupUncheckedCreateWithoutPermissionsInput> | Prisma.GroupCreateWithoutPermissionsInput[] | Prisma.GroupUncheckedCreateWithoutPermissionsInput[]
+  connectOrCreate?: Prisma.GroupCreateOrConnectWithoutPermissionsInput | Prisma.GroupCreateOrConnectWithoutPermissionsInput[]
+  upsert?: Prisma.GroupUpsertWithWhereUniqueWithoutPermissionsInput | Prisma.GroupUpsertWithWhereUniqueWithoutPermissionsInput[]
+  set?: Prisma.GroupWhereUniqueInput | Prisma.GroupWhereUniqueInput[]
+  disconnect?: Prisma.GroupWhereUniqueInput | Prisma.GroupWhereUniqueInput[]
+  delete?: Prisma.GroupWhereUniqueInput | Prisma.GroupWhereUniqueInput[]
+  connect?: Prisma.GroupWhereUniqueInput | Prisma.GroupWhereUniqueInput[]
+  update?: Prisma.GroupUpdateWithWhereUniqueWithoutPermissionsInput | Prisma.GroupUpdateWithWhereUniqueWithoutPermissionsInput[]
+  updateMany?: Prisma.GroupUpdateManyWithWhereWithoutPermissionsInput | Prisma.GroupUpdateManyWithWhereWithoutPermissionsInput[]
+  deleteMany?: Prisma.GroupScalarWhereInput | Prisma.GroupScalarWhereInput[]
+}
+
 export type GroupCreateWithoutUsersInput = {
   created_at?: Date | string
   updated_at?: Date | string
@@ -470,6 +515,7 @@ export type GroupCreateWithoutUsersInput = {
   description?: string | null
   sort?: number
   status?: boolean
+  permissions?: Prisma.PermissionCreateNestedManyWithoutGroupsInput
 }
 
 export type GroupUncheckedCreateWithoutUsersInput = {
@@ -480,6 +526,7 @@ export type GroupUncheckedCreateWithoutUsersInput = {
   description?: string | null
   sort?: number
   status?: boolean
+  permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutGroupsInput
 }
 
 export type GroupCreateOrConnectWithoutUsersInput = {
@@ -516,6 +563,48 @@ export type GroupScalarWhereInput = {
   status?: Prisma.BoolFilter<"Group"> | boolean
 }
 
+export type GroupCreateWithoutPermissionsInput = {
+  created_at?: Date | string
+  updated_at?: Date | string
+  name: string
+  description?: string | null
+  sort?: number
+  status?: boolean
+  users?: Prisma.UserCreateNestedManyWithoutGroupsInput
+}
+
+export type GroupUncheckedCreateWithoutPermissionsInput = {
+  id?: number
+  created_at?: Date | string
+  updated_at?: Date | string
+  name: string
+  description?: string | null
+  sort?: number
+  status?: boolean
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutGroupsInput
+}
+
+export type GroupCreateOrConnectWithoutPermissionsInput = {
+  where: Prisma.GroupWhereUniqueInput
+  create: Prisma.XOR<Prisma.GroupCreateWithoutPermissionsInput, Prisma.GroupUncheckedCreateWithoutPermissionsInput>
+}
+
+export type GroupUpsertWithWhereUniqueWithoutPermissionsInput = {
+  where: Prisma.GroupWhereUniqueInput
+  update: Prisma.XOR<Prisma.GroupUpdateWithoutPermissionsInput, Prisma.GroupUncheckedUpdateWithoutPermissionsInput>
+  create: Prisma.XOR<Prisma.GroupCreateWithoutPermissionsInput, Prisma.GroupUncheckedCreateWithoutPermissionsInput>
+}
+
+export type GroupUpdateWithWhereUniqueWithoutPermissionsInput = {
+  where: Prisma.GroupWhereUniqueInput
+  data: Prisma.XOR<Prisma.GroupUpdateWithoutPermissionsInput, Prisma.GroupUncheckedUpdateWithoutPermissionsInput>
+}
+
+export type GroupUpdateManyWithWhereWithoutPermissionsInput = {
+  where: Prisma.GroupScalarWhereInput
+  data: Prisma.XOR<Prisma.GroupUpdateManyMutationInput, Prisma.GroupUncheckedUpdateManyWithoutPermissionsInput>
+}
+
 export type GroupUpdateWithoutUsersInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -523,6 +612,7 @@ export type GroupUpdateWithoutUsersInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sort?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  permissions?: Prisma.PermissionUpdateManyWithoutGroupsNestedInput
 }
 
 export type GroupUncheckedUpdateWithoutUsersInput = {
@@ -533,9 +623,41 @@ export type GroupUncheckedUpdateWithoutUsersInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sort?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  permissions?: Prisma.PermissionUncheckedUpdateManyWithoutGroupsNestedInput
 }
 
 export type GroupUncheckedUpdateManyWithoutUsersInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sort?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+}
+
+export type GroupUpdateWithoutPermissionsInput = {
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sort?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  users?: Prisma.UserUpdateManyWithoutGroupsNestedInput
+}
+
+export type GroupUncheckedUpdateWithoutPermissionsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sort?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  users?: Prisma.UserUncheckedUpdateManyWithoutGroupsNestedInput
+}
+
+export type GroupUncheckedUpdateManyWithoutPermissionsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -552,10 +674,12 @@ export type GroupUncheckedUpdateManyWithoutUsersInput = {
 
 export type GroupCountOutputType = {
   users: number
+  permissions: number
 }
 
 export type GroupCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   users?: boolean | GroupCountOutputTypeCountUsersArgs
+  permissions?: boolean | GroupCountOutputTypeCountPermissionsArgs
 }
 
 /**
@@ -575,6 +699,13 @@ export type GroupCountOutputTypeCountUsersArgs<ExtArgs extends runtime.Types.Ext
   where?: Prisma.UserWhereInput
 }
 
+/**
+ * GroupCountOutputType without action
+ */
+export type GroupCountOutputTypeCountPermissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PermissionWhereInput
+}
+
 
 export type GroupSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -585,6 +716,7 @@ export type GroupSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   sort?: boolean
   status?: boolean
   users?: boolean | Prisma.Group$usersArgs<ExtArgs>
+  permissions?: boolean | Prisma.Group$permissionsArgs<ExtArgs>
   _count?: boolean | Prisma.GroupCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["group"]>
 
@@ -621,6 +753,7 @@ export type GroupSelectScalar = {
 export type GroupOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "created_at" | "updated_at" | "name" | "description" | "sort" | "status", ExtArgs["result"]["group"]>
 export type GroupInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   users?: boolean | Prisma.Group$usersArgs<ExtArgs>
+  permissions?: boolean | Prisma.Group$permissionsArgs<ExtArgs>
   _count?: boolean | Prisma.GroupCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type GroupIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -630,6 +763,7 @@ export type $GroupPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   name: "Group"
   objects: {
     users: Prisma.$UserPayload<ExtArgs>[]
+    permissions: Prisma.$PermissionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1034,6 +1168,7 @@ readonly fields: GroupFieldRefs;
 export interface Prisma__GroupClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   users<T extends Prisma.Group$usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Group$usersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  permissions<T extends Prisma.Group$permissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Group$permissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PermissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1479,6 +1614,30 @@ export type Group$usersArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   distinct?: Prisma.UserScalarFieldEnum | Prisma.UserScalarFieldEnum[]
+}
+
+/**
+ * Group.permissions
+ */
+export type Group$permissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Permission
+   */
+  select?: Prisma.PermissionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Permission
+   */
+  omit?: Prisma.PermissionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PermissionInclude<ExtArgs> | null
+  where?: Prisma.PermissionWhereInput
+  orderBy?: Prisma.PermissionOrderByWithRelationInput | Prisma.PermissionOrderByWithRelationInput[]
+  cursor?: Prisma.PermissionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PermissionScalarFieldEnum | Prisma.PermissionScalarFieldEnum[]
 }
 
 /**

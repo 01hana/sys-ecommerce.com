@@ -8,6 +8,7 @@ import {
   IsUUID,
   Min,
 } from 'class-validator';
+import { PermissionDto } from './permission.dto';
 
 export class CreateGroupDto {
   @IsString()
@@ -31,4 +32,8 @@ export class CreateGroupDto {
   @IsUUID('4', { each: true })
   @IsOptional()
   userIds?: string[];
+
+  @IsArray()
+  @IsOptional()
+  permissions?: PermissionDto[];
 }

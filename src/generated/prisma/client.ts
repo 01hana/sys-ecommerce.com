@@ -67,3 +67,8 @@ export type Product = Prisma.ProductModel
  * 
  */
 export type File = Prisma.FileModel
+/**
+ * Model Permission
+ * 
+ */
+export type Permission = Prisma.PermissionModel

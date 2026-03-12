@@ -38,6 +38,11 @@ export class GroupsService {
         skip,
         take: sizePage,
         orderBy: { updated_at: 'desc' },
+        include: {
+          _count: {
+            select: { users: true },
+          },
+        },
       }),
     ]);
 
@@ -49,7 +54,7 @@ export class GroupsService {
   }
 
   async findOne(id: number) {
-    const group = await this.prisma.group.findUnique({ where: { id } });
+    const group = await this.prisma.group.findUnique({ where: { id }, include: { permissions: true } });
 
     if (!group) throw new NotFoundException('找不到該群組');
 
@@ -68,7 +73,17 @@ export class GroupsService {
       data.users = { connect: dto.userIds.map(id => ({ id })) };
     }
 
-    return this.prisma.group.create({ data, include: { users: true } });
+    // handle permissions: find or create permissions then connect
+    if (dto.permissions && dto.permissions.length) {
+      data.permissions = {
+        connectOrCreate: dto.permissions.map(p => ({
+          where: { subject_action: { subject: p.subject, action: p.action } },
+          create: { subject: p.subject, action: p.action },
+        })),
+      };
+    }
+
+    return this.prisma.group.create({ data, include: { users: true, permissions: true } });
   }
 
   async update(id: number, dto: CreateGroupDto) {
@@ -86,7 +101,19 @@ export class GroupsService {
       data.users = { connect: dto.userIds.map(id => ({ id })) };
     }
 
-    return this.prisma.group.update({ where: { id }, data, include: { users: true } });
+    if (dto.permissions) {
+      // 先清空關聯，再 connectOrCreate 新的
+      await this.prisma.group.update({ where: { id }, data: { permissions: { set: [] } } });
+      
+      data.permissions = {
+        connectOrCreate: dto.permissions.map(p => ({
+          where: { subject_action: { subject: p.subject, action: p.action } },
+          create: { subject: p.subject, action: p.action },
+        })),
+      };
+    }
+
+    return this.prisma.group.update({ where: { id }, data, include: { users: true, permissions: true } });
   }
 
   async remove(ids: number[]) {
@@ -100,6 +127,7 @@ export class GroupsService {
       if (existing.length !== ids.length) {
         const foundIds = existing.map(group => group.id);
         const missingIds = ids.filter(id => !foundIds.includes(id));
+
         throw new NotFoundException(`找不到以下群組 ID：${missingIds.join(', ')}`);
       }
 
@@ -108,6 +136,7 @@ export class GroupsService {
 
       if (groupsWithUsers.length > 0) {
         const blockedIds = groupsWithUsers.map(group => group.id);
+
         throw new ConflictException(`以下群組底下仍有使用者，無法刪除：${blockedIds.join(', ')}`);
       }
 
