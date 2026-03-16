@@ -154,16 +154,16 @@ export class ProductsService {
 
     // 刪除檔案系統中的實體檔案
     const fileDeletes: Array<{ path: string; deleted: boolean; error?: string }> = [];
-    for (const p of uniquePaths) {
+    for (const path of uniquePaths) {
       try {
-        const abs = pathLib.isAbsolute(p) ? p : pathLib.resolve(process.cwd(), p);
+        const abs = pathLib.isAbsolute(path) ? path : pathLib.resolve(process.cwd(), path);
 
         await fs.unlink(abs);
 
-        fileDeletes.push({ path: p, deleted: true });
+        fileDeletes.push({ path, deleted: true });
       } catch (err: any) {
         // 若檔案不存在或其他問題，記錄錯誤但不拋出
-        fileDeletes.push({ path: p, deleted: false, error: err.message });
+        fileDeletes.push({ path, deleted: false, error: err.message });
       }
     }
 

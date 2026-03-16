@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { PaginationDto, DeleteIntDto } from 'src/common/dto';
@@ -80,7 +80,23 @@ export class UsersService {
   }
 
   async create(dto: CreateUserDto) {
-    // 將 password 加密存到 hash
+    // 允許在已軟刪除的帳號/Email 上重複建立：若存在 active 使用者則拒絕
+    const conflicts = await this.prisma.user.findMany({
+      where: {
+        OR: [{ account: dto.account }, { email: dto.email }],
+      },
+      select: { id: true, deleted_at: true },
+    });
+
+    const active = conflicts.filter(conflict => !conflict.deleted_at);
+    if (active.length > 0) {
+      throw new ConflictException('帳號 或 Email 已存在');
+    }
+
+    const softDeletedIds = conflicts
+      .filter(conflict => conflict.deleted_at)
+      .map(conflict => conflict.id);
+
     const hash = await argon.hash(dto.password);
 
     const data: any = {
@@ -95,26 +111,29 @@ export class UsersService {
       data.groups = { connect: dto.groups.map(id => ({ id })) };
     }
 
-    const user = await this.prisma.user.create({
-      data,
-      select: {
-        id: true,
-        name: true,
-        account: true,
-        email: true,
-        status: true,
-        created_at: true,
-        updated_at: true,
-        groups: { select: { name: true } },
-      },
-    });
+    const createSelect = {
+      id: true,
+      name: true,
+      account: true,
+      email: true,
+      status: true,
+      created_at: true,
+      updated_at: true,
+      groups: { select: { name: true } },
+    } as const;
 
-    // return {
-    //   ...created,
-    //   groups: created.groups?.map(g => g.name) ?? [],
-    // };
+    if (softDeletedIds.length > 0) {
+      // 在 transaction 中先移除軟刪除紀錄，再建立新使用者
+      return await this.prisma.$transaction(async tx => {
+        await tx.user.deleteMany({ where: { id: { in: softDeletedIds } } });
 
-    return user;
+        const user = await tx.user.create({ data, select: createSelect });
+
+        return user;
+      });
+    }
+
+    return await this.prisma.user.create({ data, select: createSelect });
   }
 
   async update(id: string, dto: UpdateUserDto) {
@@ -148,32 +167,33 @@ export class UsersService {
       },
     });
 
-    // return { ...updated, groups: updated.groups?.map(g => g.name) ?? [] };
-
     return user;
   }
 
-  async remove(dto: DeleteIntDto) {
-    // 將 ids 轉成 string[] 因 user.id 為 string
-    const ids = dto.ids.map(String);
+  async remove(ids: string[]) {
+    // 批次刪除：先檢查所有 id 是否存在
+    return await this.prisma.$transaction(async tx => {
+      const existing = await tx.user.findMany({
+        where: { id: { in: ids } },
+        select: { id: true },
+      });
 
-    // 檢查是否所有 id 存在
-    const existing = await this.prisma.user.findMany({
-      where: { id: { in: ids } },
-      select: { id: true },
+      if (existing.length !== ids.length) {
+        const foundIds = existing.map(user => user.id);
+        const missingIds = ids.filter(id => !foundIds.includes(id));
+
+        throw new NotFoundException(`找不到以下使用者 ID：${missingIds.join(', ')}`);
+      }
+
+      await tx.user.updateMany({
+        where: { id: { in: ids } },
+        data: { deleted_at: new Date() },
+      });
+
+      return {
+        message: '刪除成功',
+        deletedIds: ids,
+      };
     });
-
-    if (existing.length !== ids.length) {
-      const foundIds = existing.map(u => u.id);
-      const missing = ids.filter(i => !foundIds.includes(i));
-      throw new NotFoundException(`找不到以下使用者 ID：${missing.join(', ')}`);
-    }
-
-    await this.prisma.user.updateMany({
-      where: { id: { in: ids } },
-      data: { deleted_at: new Date() },
-    });
-
-    return { message: '刪除成功', deletedIds: ids };
   }
 }

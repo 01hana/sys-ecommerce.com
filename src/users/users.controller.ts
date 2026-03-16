@@ -14,7 +14,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto } from './dto';
-import { PaginationDto, DeleteIntDto } from 'src/common/dto';
+import { PaginationDto, DeleteStringDto } from 'src/common/dto';
 
 @Controller('users')
 export class UsersController {
@@ -46,7 +46,7 @@ export class UsersController {
 
   @Delete()
   @UseGuards(AuthGuard('jwt'))
-  remove(@Body() dto: DeleteIntDto) {
-    return this.usersService.remove(dto);
+  remove(@Body() dto: DeleteStringDto) {
+    return this.usersService.remove(dto.ids);
   }
 }

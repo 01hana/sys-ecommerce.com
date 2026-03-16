@@ -1,12 +1,4 @@
-import {
-  IsBoolean,
-  IsEmail,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  IsArray,
-  IsInt,
-} from 'class-validator';
+import { IsBoolean, IsEmail, IsNotEmpty, IsString, IsArray, IsInt } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
@@ -27,10 +19,10 @@ export class CreateUserDto {
 
   @IsArray()
   @IsInt({ each: true })
-  @IsOptional()
-  groups?: number[];
+  @IsNotEmpty()
+  groups: number[];
 
   @IsBoolean()
-  @IsOptional()
-  status?: boolean;
+  @IsNotEmpty()
+  status: boolean;
 }
