@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class SigninDto {
   @IsNotEmpty()
@@ -8,17 +8,16 @@ export class SigninDto {
   password: string;
 }
 
-export class SignupDto {
-  @IsNotEmpty()
-  name: string;
-
-  @IsNotEmpty()
-  account: string;
+export class SetProfileDto {
+  @IsString()
+  @IsOptional()
+  name?: string;
 
   @IsEmail()
-  @IsNotEmpty()
-  email: string;
+  @IsOptional()
+  email?: string;
 
-  @IsNotEmpty()
-  password: string;
+  @IsString()
+  @IsOptional()
+  password?: string; // password can be updated only via this DTO
 }

@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import * as argon from 'argon2';
-import { SigninDto, SignupDto } from './dto';
+import { SigninDto, SetProfileDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -34,37 +34,18 @@ export class AuthService {
     return this.signToken(user);
   }
 
-  async signup(dto: SignupDto) {
-    try {
-      const hash = await argon.hash(dto.password);
-
-      const user = await this.prisma.user.create({
-        data: {
-          name: dto.name,
-          account: dto.account,
-          email: dto.email,
-          hash,
-        },
-      });
-
-      return this.signToken(user);
-    } catch (error) {
-      if (error instanceof PrismaClientKnownRequestError) {
-        if (error.code === 'P2002') {
-          throw new ForbiddenException('Credentials taken');
-        }
-      }
-
-      throw error;
-    }
-  }
-
   async signToken(user: any): Promise<{
     admin_access_token: string;
-    user: { uuid: string; name: string; account: string; email: string };
+    user: {
+      id: string;
+      name: string;
+      account: string;
+      email: string;
+      permissions?: Array<{ subject: string; action: string }>;
+    };
   }> {
     const payload = {
-      uuid: user.id,
+      id: user.id,
       name: user.name,
       account: user.account,
       email: user.email,
@@ -75,11 +56,94 @@ export class AuthService {
       secret: this.config.get('JWT_SECRET'),
     });
 
+    const { permissions } = await this.getUserPermissions(user);
+
     return {
       admin_access_token: token,
       user: {
-        ...payload,
+        id: payload.id,
+        name: payload.name,
+        account: payload.account,
+        email: payload.email,
+        permissions,
       },
     };
+  }
+
+  async getProfile(user: any) {
+    const { targetUser, permissions } = await this.getUserPermissions(user);
+
+    return {
+      id: targetUser.id,
+      name: targetUser.name,
+      account: targetUser.account,
+      email: targetUser.email,
+      permissions,
+    };
+  }
+
+  async setProfile(user: any, dto: SetProfileDto) {
+    // 只允許更新自己的資訊（name, email, password）並重新簽發 token
+    const data: any = {};
+
+    if (dto.name) data.name = dto.name;
+    if (dto.email) data.email = dto.email;
+    if (dto.password) data.hash = await argon.hash(dto.password);
+
+    try {
+      const updated = await this.prisma.user.update({
+        where: { id: user.id },
+        data,
+      });
+
+      // 重新簽發 token，回傳 token 與使用者摘要
+      return this.signToken(updated);
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError && error.code === 'P2002') {
+        // unique constraint violation (e.g. email taken)
+        throw new ForbiddenException('Email 或帳號已被使用');
+      }
+
+      throw error;
+    }
+  }
+
+  async getUserPermissions(user: any) {
+    // 查詢使用者所屬 groups 與 groups 的 permissions
+    const targetUser = await this.prisma.user.findUnique({
+      where: { id: user.id },
+      select: {
+        id: true,
+        name: true,
+        account: true,
+        email: true,
+        groups: {
+          select: {
+            permissions: {
+              select: { subject: true, action: true },
+            },
+          },
+        },
+      },
+    });
+
+    if (!targetUser) throw new ForbiddenException('User not found');
+
+    // 彙整並去重 permissions
+    const seen = new Set<string>();
+    const permissions: Array<{ subject: string; action: string }> = [];
+
+    for (const group of targetUser.groups ?? []) {
+      for (const permission of group.permissions ?? []) {
+        const key = `${permission.subject}::${permission.action}`;
+
+        if (!seen.has(key)) {
+          seen.add(key);
+          permissions.push({ subject: permission.subject, action: permission.action });
+        }
+      }
+    }
+
+    return { targetUser, permissions };
   }
 }
