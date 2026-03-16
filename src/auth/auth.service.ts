@@ -1,4 +1,9 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  UnauthorizedException,
+  NotFoundException,
+  Injectable,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import * as argon from 'argon2';
 import { SigninDto, SetProfileDto } from './dto';
@@ -22,13 +27,13 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new ForbiddenException('Credentials incorrect');
+      throw new UnauthorizedException('帳號或密碼不正確');
     }
 
-    const pwMattches = await argon.verify(user.hash, dto.password);
+    const pwMatches = await argon.verify(user.hash, dto.password);
 
-    if (!pwMattches) {
-      throw new ForbiddenException('Credentials incorrect');
+    if (!pwMatches) {
+      throw new UnauthorizedException('帳號或密碼不正確');
     }
 
     return this.signToken(user);
@@ -96,12 +101,10 @@ export class AuthService {
         data,
       });
 
-      // 重新簽發 token，回傳 token 與使用者摘要
       return this.signToken(updated);
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError && error.code === 'P2002') {
-        // unique constraint violation (e.g. email taken)
-        throw new ForbiddenException('Email 或帳號已被使用');
+        throw new ConflictException('Email 或帳號已被使用');
       }
 
       throw error;
@@ -127,7 +130,7 @@ export class AuthService {
       },
     });
 
-    if (!targetUser) throw new ForbiddenException('User not found');
+    if (!targetUser) throw new NotFoundException('找不到該使用者');
 
     // 彙整並去重 permissions
     const seen = new Set<string>();
