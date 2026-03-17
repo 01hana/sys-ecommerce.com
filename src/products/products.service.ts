@@ -11,11 +11,14 @@ export class ProductsService {
   constructor(private prisma: PrismaService) {}
 
   async findAll(dto: PaginationDto, categoryId?: number) {
-    const { page, sizePage, search, filters } = dto;
+    const { page, sizePage, searches, filters } = dto;
     const skip = (page - 1) * sizePage;
 
     // 1. 建立一個有型別保護的動態查詢容器
     const where: Prisma.ProductWhereInput = {};
+
+    const keyword: string | undefined =
+      searches && typeof searches.keyword === 'string' ? searches.keyword : undefined;
 
     // 加入 categoryId 篩選
     if (categoryId) {
@@ -23,10 +26,10 @@ export class ProductsService {
     }
 
     // 模糊搜尋：針對 name 或 description
-    if (search) {
+    if (keyword) {
       where.OR = [
-        { name: { contains: search, mode: 'insensitive' } },
-        { description: { contains: search, mode: 'insensitive' } },
+        { name: { contains: keyword, mode: 'insensitive' } },
+        { description: { contains: keyword, mode: 'insensitive' } },
       ];
     }
 

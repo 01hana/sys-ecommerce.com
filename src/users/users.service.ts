@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateUserDto, UpdateUserDto } from './dto';
-import { PaginationDto, DeleteIntDto } from 'src/common/dto';
+import { CreateUserDto, UpdateUserDto, UpdateBatchUserDto } from './dto';
+import { PaginationDto } from 'src/common/dto';
+import { Prisma } from '../generated/prisma/client';
 import * as argon from 'argon2';
 
 @Injectable()
@@ -9,19 +10,53 @@ export class UsersService {
   constructor(private prisma: PrismaService) {}
 
   async findAll(dto: PaginationDto) {
-    const { page, sizePage, search, filters } = dto;
+    const { page, sizePage, searches, filters } = dto;
     const skip = (page - 1) * sizePage;
 
-    const where: any = { deleted_at: null };
+    const where: Prisma.UserWhereInput = { deleted_at: null };
 
-    if (search) {
+    // searches 物件：{ keyword: 'text', otherField: 'val' }
+    const keyword: string | undefined =
+      searches && typeof searches.keyword === 'string' ? searches.keyword : undefined;
+
+    if (keyword) {
       where.OR = [
-        { name: { contains: search, mode: 'insensitive' } },
-        { email: { contains: search, mode: 'insensitive' } },
+        { account: { contains: keyword, mode: 'insensitive' } },
+        { name: { contains: keyword, mode: 'insensitive' } },
+        { email: { contains: keyword, mode: 'insensitive' } },
       ];
     }
+
+    // TODO:待測試
+    // 其他欄位的進階搜尋（非 keyword）
+    if (searches) {
+      const extras = Object.entries(searches).filter(([key]) => key !== 'keyword');
+      const extraConditions: any[] = [];
+
+      for (const [field, value] of extras) {
+        if (value === null || value === undefined) continue;
+        // 忽略空字串
+        if (typeof value === 'string' && value.trim() === '') continue;
+
+        // 數字字串轉 number
+        if (typeof value === 'string' && /^\d+$/.test(value)) {
+          extraConditions.push({ [field]: Number(value) });
+        } else if (value === 'true' || value === 'false') {
+          extraConditions.push({ [field]: value === 'true' });
+        } else {
+          extraConditions.push({ [field]: { contains: String(value), mode: 'insensitive' } });
+        }
+      }
+
+      if (extraConditions.length) {
+        const existingAnd = Array.isArray(where.AND) ? where.AND : where.AND ? [where.AND] : [];
+        where.AND = [...existingAnd, ...extraConditions];
+      }
+    }
+
     if (filters && filters.length) {
-      where.AND = filters.map(f => ({ [f.field]: f.value }));
+      const existingAnd = Array.isArray(where.AND) ? where.AND : where.AND ? [where.AND] : [];
+      where.AND = [...existingAnd, ...filters.map(filter => ({ [filter.field]: filter.value }))];
     }
 
     const [total, users] = await this.prisma.$transaction([
@@ -44,7 +79,6 @@ export class UsersService {
       }),
     ]);
 
-    // 將 groups 轉為 string[]（只回傳 group.name）
     const data = users.map(user => ({
       id: user.id,
       name: user.name,
@@ -57,6 +91,25 @@ export class UsersService {
     }));
 
     return { data, total, page };
+  }
+
+  async getFilters(): Promise<Record<string, { label: string; value: any }[]>> {
+    const statusOptions = [
+      { label: '啟用', value: true },
+      { label: '停用', value: false },
+    ];
+
+    const groups = await this.prisma.group.findMany({
+      orderBy: { sort: 'asc' },
+      select: { id: true, name: true },
+    });
+
+    const groupOptions = groups.map(group => ({ label: group.name, value: group.id }));
+
+    return {
+      status: statusOptions,
+      groups: groupOptions,
+    };
   }
 
   async findOne(id: string) {
@@ -168,6 +221,28 @@ export class UsersService {
     });
 
     return user;
+  }
+
+  async updateBatch(dto: UpdateBatchUserDto) {
+    const ids = dto.ids.map(String);
+
+    // 檢查存在性
+    const existing = await this.prisma.user.findMany({
+      where: { id: { in: ids } },
+      select: { id: true },
+    });
+
+    if (existing.length !== ids.length) {
+      const foundIds = existing.map(user => user.id);
+
+      const missing = ids.filter((id: string) => !foundIds.includes(id));
+
+      throw new NotFoundException(`找不到以下使用者 ID：${missing.join(', ')}`);
+    }
+
+    await this.prisma.user.updateMany({ where: { id: { in: ids } }, data: { status: dto.status } });
+
+    return { message: '更新成功', ids };
   }
 
   async remove(ids: string[]) {

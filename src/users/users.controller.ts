@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { UsersService } from './users.service';
-import { CreateUserDto, UpdateUserDto } from './dto';
+import { CreateUserDto, UpdateUserDto, UpdateBatchUserDto } from './dto';
 import { PaginationDto, DeleteStringDto } from 'src/common/dto';
 
 @Controller('users')
@@ -27,8 +27,15 @@ export class UsersController {
     return this.usersService.findAll(dto);
   }
 
+  @Get('getFilters')
+  @UseGuards(AuthGuard('jwt'))
+  getFilters() {
+    return this.usersService.getFilters();
+  }
+
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  @UseGuards(AuthGuard('jwt'))
+  get(@Param('id') id: string) {
     return this.usersService.findOne(id);
   }
 
@@ -36,6 +43,12 @@ export class UsersController {
   @UseGuards(AuthGuard('jwt'))
   create(@Body() dto: CreateUserDto) {
     return this.usersService.create(dto);
+  }
+
+  @Patch('batch')
+  @UseGuards(AuthGuard('jwt'))
+  updateBatch(@Body() dto: UpdateBatchUserDto) {
+    return this.usersService.updateBatch(dto);
   }
 
   @Patch(':id')
