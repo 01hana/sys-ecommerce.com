@@ -112,9 +112,11 @@ export class GroupsService {
       sort: dto.sort ?? 0,
       status: dto.status ?? true,
     };
+
     if (dto.userIds) {
       // 先 disconnect 所有，再 connect 新的（簡單策略）
       await this.prisma.group.update({ where: { id }, data: { users: { set: [] } } });
+
       data.users = { connect: dto.userIds.map(id => ({ id })) };
     }
 
