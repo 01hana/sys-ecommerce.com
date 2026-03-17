@@ -9,16 +9,19 @@ export class GroupsService {
   constructor(private prisma: PrismaService) {}
 
   async findAll(dto: PaginationDto) {
-    const { page, sizePage, search, filters } = dto;
+    const { page, sizePage, searches, filters } = dto;
     const skip = (page - 1) * sizePage;
 
     // 1. 建立一個有型別保護的動態查詢容器
     const where: Prisma.GroupWhereInput = {};
 
+    const keyword: string | undefined =
+      searches && typeof searches.keyword === 'string' ? searches.keyword : undefined;
+
     // 模糊搜尋分類名稱
-    if (search) {
+    if (keyword) {
       where.name = {
-        contains: search,
+        contains: keyword,
         mode: 'insensitive', // 不分大小寫
       };
     }
@@ -53,8 +56,22 @@ export class GroupsService {
     };
   }
 
+  /**
+   * 取得所有群組（不分頁）
+   * 常用於前端下拉選單或全域快取
+   */
+  async findAllSimple() {
+    return await this.prisma.group.findMany({
+      orderBy: { sort: 'asc' },
+      select: { id: true, name: true },
+    });
+  }
+
   async findOne(id: number) {
-    const group = await this.prisma.group.findUnique({ where: { id }, include: { permissions: true } });
+    const group = await this.prisma.group.findUnique({
+      where: { id },
+      include: { permissions: true },
+    });
 
     if (!group) throw new NotFoundException('找不到該群組');
 
@@ -104,7 +121,7 @@ export class GroupsService {
     if (dto.permissions) {
       // 先清空關聯，再 connectOrCreate 新的
       await this.prisma.group.update({ where: { id }, data: { permissions: { set: [] } } });
-      
+
       data.permissions = {
         connectOrCreate: dto.permissions.map(p => ({
           where: { subject_action: { subject: p.subject, action: p.action } },
@@ -113,7 +130,11 @@ export class GroupsService {
       };
     }
 
-    return this.prisma.group.update({ where: { id }, data, include: { users: true, permissions: true } });
+    return this.prisma.group.update({
+      where: { id },
+      data,
+      include: { users: true, permissions: true },
+    });
   }
 
   async remove(ids: number[]) {

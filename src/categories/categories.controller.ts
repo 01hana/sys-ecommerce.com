@@ -31,7 +31,8 @@ export class CategoriesController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  @UseGuards(AuthGuard('jwt'))
+  get(@Param('id', ParseIntPipe) id: number) {
     return this.categoriesService.findOne(id);
   }
 

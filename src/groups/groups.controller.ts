@@ -30,8 +30,15 @@ export class GroupsController {
     return this.groupsService.findAll(dto);
   }
 
+  @Get('getOptions')
+  @UseGuards(AuthGuard('jwt'))
+  getOptions() {
+    return this.groupsService.findAllSimple();
+  }
+
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  @UseGuards(AuthGuard('jwt'))
+  get(@Param('id', ParseIntPipe) id: number) {
     return this.groupsService.findOne(id);
   }
 

@@ -9,16 +9,19 @@ export class CategoriesService {
   constructor(private prisma: PrismaService) {}
 
   async findAll(dto: PaginationDto) {
-    const { page, sizePage, search, filters } = dto;
+    const { page, sizePage, searches, filters } = dto;
     const skip = (page - 1) * sizePage;
 
     // 1. 建立一個有型別保護的動態查詢容器
     const where: Prisma.CategoryWhereInput = {};
 
+    const keyword: string | undefined =
+      searches && typeof searches.keyword === 'string' ? searches.keyword : undefined;
+
     // 模糊搜尋分類名稱
-    if (search) {
+    if (keyword) {
       where.name = {
-        contains: search,
+        contains: keyword,
         mode: 'insensitive', // 不分大小寫
       };
     }

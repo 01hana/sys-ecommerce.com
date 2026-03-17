@@ -1,4 +1,4 @@
-import { IsOptional, IsInt, IsString, IsArray, Min } from 'class-validator';
+import { IsOptional, IsInt, IsArray, Min, IsObject } from 'class-validator';
 
 export class PaginationDto {
   @IsInt()
@@ -10,10 +10,10 @@ export class PaginationDto {
   sizePage: number = 35;
 
   @IsOptional()
-  @IsString()
-  search?: string; // 模糊搜尋關鍵字
+  @IsObject()
+  searches?: Record<string, any>; // { keyword: '', fieldA: '', ... }
 
   @IsOptional()
   @IsArray()
-  filters?: any[]; // 假設格式為 [{ field: 'category', value: 1 }, ...]
+  filters?: any[]; // [{ field: 'category', value: 1 }, ...]
 }
