@@ -1,12 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { ConsoleLogger, ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    logger: new ConsoleLogger({
+      json: true,
+    }),
+  });
+
   app.setGlobalPrefix('api/v1/admin');
   app.useGlobalPipes(
     new ValidationPipe({
@@ -16,7 +21,8 @@ async function bootstrap() {
   );
 
   // app.useStaticAssets(join(__dirname, '..', 'public')); // __dirname 指向 src or dist 目錄，會導致路徑錯誤
-  app.useStaticAssets(join(process.cwd(), 'public'), { // process.cwd() 永遠指向根目錄
+  app.useStaticAssets(join(process.cwd(), 'public'), {
+    // process.cwd() 永遠指向根目錄
     prefix: '/',
   });
   app.useGlobalInterceptors(new TransformInterceptor());
