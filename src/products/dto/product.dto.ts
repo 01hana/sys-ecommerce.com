@@ -1,7 +1,6 @@
 import {
   IsArray,
   IsBoolean,
-  IsInt,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -16,8 +15,8 @@ export class ProductDto {
   name: string;
 
   @IsString()
-  @IsNotEmpty()
-  number: string;
+  @IsOptional()
+  number?: string;
 
   @IsString()
   @IsOptional()

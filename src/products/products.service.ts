@@ -64,6 +64,7 @@ export class ProductsService {
     const product = await this.prisma.product.findUnique({
       where: { id },
     });
+
     if (!product) throw new NotFoundException('找不到該商品');
 
     return product;
@@ -76,42 +77,61 @@ export class ProductsService {
     const coverFile = files?.cover?.[0];
     const imageFiles = files?.images ?? [];
 
-    // Use provided dto paths as defaults
-    let coverPath = dto.cover ?? '';
-    let imagesPaths = dto.images ?? [];
+    return await this.prisma.$transaction(async tx => {
+      // 建立 file 紀錄
+      let coverPath = dto.cover ?? '';
+      let imagesPaths = dto.images ?? [];
 
-    if (coverFile) {
-      const created = await this.prisma.file.create({
-        data: {
-          filename: coverFile.filename,
-          path: coverFile.path,
-          mimetype: coverFile.mimetype,
+      if (coverFile) {
+        const created = await tx.file.create({
+          data: {
+            filename: coverFile.filename,
+            path: coverFile.path,
+            mimetype: coverFile.mimetype,
+          },
+        });
+        coverPath = created.path;
+      }
+
+      if (imageFiles.length > 0) {
+        const createdImages = await Promise.all(
+          imageFiles.map(f =>
+            tx.file.create({ data: { filename: f.filename, path: f.path, mimetype: f.mimetype } }),
+          ),
+        );
+        imagesPaths = createdImages.map(c => c.path);
+      }
+
+      // 產生流水號：YYYYMMDD{categoryId}{0001}
+      const now = new Date();
+      const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const end = new Date(start);
+      end.setDate(end.getDate() + 1);
+
+      const seq = await tx.product.count({
+        where: {
+          categoryId: dto.categoryId,
+          created_at: { gte: start, lt: end },
         },
       });
-      coverPath = created.path;
-    }
 
-    if (imageFiles.length > 0) {
-      const createdImages = await Promise.all(
-        imageFiles.map(file =>
-          this.prisma.file.create({
-            data: {
-              filename: file.filename,
-              path: file.path,
-              mimetype: file.mimetype,
-            },
-          }),
-        ),
-      );
-      imagesPaths = createdImages.map(c => c.path);
-    }
+      const serial = String(seq + 1).padStart(4, '0');
+      const datePart = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(
+        now.getDate(),
+      ).padStart(2, '0')}`;
+      const generatedNumber = `${datePart}${dto.categoryId}${serial}`;
 
-    return this.prisma.product.create({
-      data: {
-        ...dto,
-        cover: coverPath,
-        images: imagesPaths,
-      },
+      // 建立 product（含自動產生的 number）
+      const product = await tx.product.create({
+        data: {
+          ...dto,
+          number: generatedNumber,
+          cover: coverPath,
+          images: imagesPaths,
+        },
+      });
+
+      return product;
     });
   }
 
