@@ -16,10 +16,6 @@ export class ProductDto {
 
   @IsString()
   @IsOptional()
-  number?: string;
-
-  @IsString()
-  @IsOptional()
   description?: string;
 
   @IsNotEmpty()

@@ -115,3 +115,26 @@ model Permission {
   @@unique([subject, action])
   @@map("permissions")
 }
+
+model Order {
+  id              String   @id @default(uuid())
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+  deleted_at      DateTime?
+
+  order_status    String   @default("pending")
+  payment_status  String   @default("unpaid")
+  delivery_status String   @default("undelivered")
+  order_number    String   @unique
+  items           Json     
+  total_price     Float
+  payment_method  String   
+  delivery_method String 
+  customer        String
+  mobile          String
+  email           String
+  shipping_address String
+  memo            String?
+
+  @@map("orders")
+}

@@ -52,3 +52,8 @@ export type File = Prisma.FileModel
  * 
  */
 export type Permission = Prisma.PermissionModel
+/**
+ * Model Order
+ * 
+ */
+export type Order = Prisma.OrderModel

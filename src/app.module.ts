@@ -7,17 +7,19 @@ import { CustomersModule } from './customers/customers.module';
 import { ProductsModule } from './products/products.module';
 import { CategoriesModule } from './categories/categories.module';
 import { GroupsModule } from './groups/groups.module';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     AuthModule,
-    UsersModule,
     PrismaModule,
     CustomersModule,
-    ProductsModule,
     CategoriesModule,
+    ProductsModule,
+    OrdersModule,
     GroupsModule,
+    UsersModule,
   ],
 })
 export class AppModule {}
