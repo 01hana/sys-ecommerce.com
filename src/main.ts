@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConsoleLogger, ValidationPipe } from '@nestjs/common';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
@@ -11,6 +12,16 @@ async function bootstrap() {
       json: true,
     }),
   });
+
+  const config = new DocumentBuilder()
+    .setTitle('後台管理 API')
+    .setDescription('後台管理系統 CRUD 接口文檔')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+
+  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api/v1/docs', app, documentFactory);
 
   app.setGlobalPrefix('api/v1/admin');
   app.useGlobalPipes(
