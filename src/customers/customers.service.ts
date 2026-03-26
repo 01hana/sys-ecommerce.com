@@ -2,6 +2,7 @@ import { Injectable, NotFoundException, ConflictException } from '@nestjs/common
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CustomerDto } from './dto';
 import { PaginationDto } from 'src/common/dto';
+import { formatDate } from 'src/common/utils/format';
 import * as argon from 'argon2';
 
 @Injectable()
@@ -67,11 +68,14 @@ export class CustomersService {
           address: true,
           created_at: true,
           updated_at: true,
+          birthday: true,
         },
       }),
     ]);
 
-    return { data: customers, total, page };
+    const data = customers.map(c => ({ ...c, birthday: formatDate(c.birthday) }));
+
+    return { data, total, page };
   }
 
   async getFilters(): Promise<Record<string, { label: string; value: any }[]>> {
@@ -94,6 +98,7 @@ export class CustomersService {
         email: true,
         mobile: true,
         address: true,
+        birthday: true,
         created_at: true,
         updated_at: true,
       },
@@ -101,7 +106,7 @@ export class CustomersService {
 
     if (!customer) throw new NotFoundException('找不到該客戶');
 
-    return customer;
+    return { ...customer, birthday: formatDate(customer.birthday) };
   }
 
   async create(dto: CustomerDto) {
@@ -114,14 +119,17 @@ export class CustomersService {
       name: dto.name,
       email: dto.email,
       mobile: dto.mobile,
-      address: dto.address,
+      address: dto.address ?? '',
+      gender: dto.gender ?? 'unknown',
+      birthday: dto.birthday,
     };
 
-    if (dto.password) {
-      data.hash = await argon.hash(dto.password);
-    }
+    // 將前端傳入的 YYYY-MM-DD 字串轉成 Date
+    if (dto.birthday) data.birthday = new Date(dto.birthday);
 
-    return await this.prisma.customer.create({
+    if (dto.password) data.hash = await argon.hash(dto.password);
+
+    const created = await this.prisma.customer.create({
       data,
       select: {
         id: true,
@@ -129,10 +137,13 @@ export class CustomersService {
         email: true,
         mobile: true,
         address: true,
+        birthday: true,
         created_at: true,
         updated_at: true,
       },
     });
+
+    return { ...created, birthday: formatDate(created.birthday) };
   }
 
   async update(id: string, dto: CustomerDto) {
@@ -143,11 +154,30 @@ export class CustomersService {
       email: dto.email,
       mobile: dto.mobile,
       address: dto.address,
+      birthday: dto.birthday,
     };
+
+    if (dto.address !== undefined) data.address = dto.address;
+    if (dto.gender !== undefined) data.gender = dto.gender;
 
     if (dto.password) data.hash = await argon.hash(dto.password);
 
-    return await this.prisma.customer.update({ where: { id }, data });
+    const updated = await this.prisma.customer.update({
+      where: { id },
+      data,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        mobile: true,
+        address: true,
+        birthday: true,
+        created_at: true,
+        updated_at: true,
+      },
+    });
+
+    return { ...updated, birthday: formatDate(updated.birthday) };
   }
 
   async remove(ids: string[]) {

@@ -113,7 +113,9 @@ export const CustomerScalarFieldEnum = {
   hash: 'hash',
   name: 'name',
   mobile: 'mobile',
-  address: 'address'
+  address: 'address',
+  birthday: 'birthday',
+  gender: 'gender'
 } as const
 
 export type CustomerScalarFieldEnum = (typeof CustomerScalarFieldEnum)[keyof typeof CustomerScalarFieldEnum]

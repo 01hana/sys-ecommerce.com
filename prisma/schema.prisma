@@ -55,8 +55,16 @@ model Customer {
   name      String
   mobile    String
   address   String
+  birthday  DateTime? @db.Date
+  gender    Gender  @default(unknown)
 
   @@map("customers")
+}
+
+enum Gender {
+  male
+  female
+  unknown
 }
 
 model Category {
@@ -125,11 +133,14 @@ model Order {
   order_status    String   @default("pending")
   payment_status  String   @default("unpaid")
   delivery_status String   @default("undelivered")
+  
   order_number    String   @unique
   items           Json     
   total_price     Float
+
   payment_method  String   
   delivery_method String 
+  
   customer        String
   mobile          String
   email           String
